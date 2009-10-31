@@ -172,9 +172,6 @@ class RSS_Feed:
         group.newChild(None, 'foaf:name', escape(self.options["xmltitle"]))
         group.newChild(None, 'foaf:homepage', escape(self.options["xmllink"]))
 
-        seeAlso = group.newChild(None, 'rdfs:seeAlso', None)
-        seeAlso.setProp('rdf:resource', '')
-
         for url in sorted(rawdog.feeds.keys()):
             member = group.newChild(None, 'foaf:member', None)
 
