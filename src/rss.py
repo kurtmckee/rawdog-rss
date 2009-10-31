@@ -3,6 +3,7 @@
 # rawdog plugin to generate RSS, OPML and FOAF output
 # Copyright 2008 Jonathan Riddell
 # Copyright 2009 Adam Sampson <ats@offog.org>
+# Copyright 2009 Kurt McKee <contactme@kurtmckee.org>
 #
 # rawdog_rss is free software; you can redistribute and/or modify it
 # under the terms of that license as published by the Free Software
