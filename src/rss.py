@@ -179,10 +179,11 @@ class RSS_Feed:
             agent.newChild(None, 'foaf:name', escape(self.feed_name(rawdog.feeds[url], config)))
             weblog = agent.newChild(None, 'foaf:weblog', None)
             document = weblog.newChild(None, 'foaf:Document', None)
-            document.setProp('rdf:about', url)
+            if rawdog.feeds[url].feed_info.get('link', ''):
+                document.setProp('rdf:about', rawdog.feeds[url].feed_info['link'])
             seealso = document.newChild(None, 'rdfs:seeAlso', None)
             channel = seealso.newChild(None, 'rss:channel', None)
-            channel.setProp('rdf:about', '')
+            channel.setProp('rdf:about', url)
 
         doc.saveFormatFile(self.options["outputfoaf"], 1)
         doc.freeDoc()
