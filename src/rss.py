@@ -192,7 +192,7 @@ class RSS_Feed:
         doc = libxml2.newDoc("1.0")
 
         xml = doc.newChild(None, 'opml', None)
-        xml.setProp('version', "1.1")
+        xml.setProp('version', "2.0")
 
         head = xml.newChild(None, 'head', None)
         head.newChild(None, 'title', escape(self.options["xmltitle"]))
