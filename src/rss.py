@@ -40,12 +40,21 @@
 # "sortbyfeeddate true" in your config file too.
 
 import os, time, cgi
+import htmlentitydefs
 import rawdoglib.plugins, rawdoglib.rawdog
 import libxml2
 
 from rawdoglib.rawdog import detail_to_html, string_to_html
 from time import gmtime, strftime
-from xml.sax.saxutils import escape
+from xml.sax.saxutils import escape, unescape
+
+# Prepare dictionary of conversions for unescape().
+# These conversions allow people to use HTML character entities such as
+# &aacute; in define_name if they don't know how to input Unicode characters.
+# HACK: The unicode characters currently must be re-encoded as utf-8.
+htmlchars = {}
+for k, v in htmlentitydefs.name2codepoint.items():
+    htmlchars['&%s;' % k] = unichr(v).encode('utf8')
 
 def rfc822_date(tm):
     """Format a GMT timestamp as returned by time.gmtime() in RFC822 format.
@@ -86,7 +95,7 @@ class RSS_Feed:
         that; otherwise, use the feed title."""
 
         if "define_name" in feed.args:
-            return feed.args["define_name"]
+            return unescape(feed.args["define_name"], htmlchars)
         else:
             return feed.get_html_name(config)
 
