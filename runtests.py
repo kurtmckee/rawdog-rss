@@ -56,9 +56,12 @@ class TestCases(unittest.TestCase):
         # Create output files for comparison
         testpath = join(basedir, 'tests/')
         outpath = join(basedir, 'output/')
-        main(['-d', outpath, '-c', join(testpath, testfile), '-w'])
+        if 'feed' in testfile:
+            main(['-d', outpath, '-c', join(testpath, testfile), '-uw'])
+        else:
+            main(['-d', outpath, '-c', join(testpath, testfile), '-w'])
         # Parse the files and make sure they don't throw errors
-        for f in ('foafroll.xml', 'opml.xml'):
+        for f in ('foafroll.xml', 'opml.xml', 'rss20.xml'):
             handler = Handler()
             parser = xml.sax.make_parser()
             parser.setContentHandler(handler)

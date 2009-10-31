@@ -109,7 +109,7 @@ class RSS_Feed:
         title = self.feed_name(rawdog.feeds[article.feed], config)
         s = detail_to_html(entry_info.get("title_detail"), True, config)
         if s is not None:
-            title += ": " + s
+            title += ": " + s.encode('utf8')
         xml_article.newChild(None, 'title', title)
 
         if article.date is not None:
@@ -123,7 +123,7 @@ class RSS_Feed:
         for key in ["content", "summary_detail"]:
             s = detail_to_html(entry_info.get(key), False, config)
             if s is not None:
-                xml_article.newChild(None, 'description', s)
+                xml_article.newChild(None, 'description', escape(s))
                 break
 
         return True
