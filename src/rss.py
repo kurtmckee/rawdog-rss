@@ -106,7 +106,7 @@ class RSS_Feed:
         guid = xml_article.newChild(None, 'guid', string_to_html(id, config))
         guid.setProp('isPermaLink', 'false')
 
-        title = self.feed_name(rawdog.feeds[article.feed], config)
+        title = escape(self.feed_name(rawdog.feeds[article.feed], config))
         s = detail_to_html(entry_info.get("title_detail"), True, config)
         if s is not None:
             title += ": " + s.encode('utf8')
