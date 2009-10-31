@@ -45,6 +45,7 @@ import libxml2
 
 from rawdoglib.rawdog import detail_to_html, string_to_html
 from time import gmtime, strftime
+from xml.sax.saxutils import escape
 
 def rfc822_date(tm):
     """Format a GMT timestamp as returned by time.gmtime() in RFC822 format.
@@ -127,10 +128,10 @@ class RSS_Feed:
         rss.setProp('xmlns:atom', 'http://www.w3.org/2005/Atom')
 
         channel = rss.newChild(None, 'channel', None)
-        channel.newChild(None, 'title', self.options["xmltitle"])
-        channel.newChild(None, 'link', self.options["xmllink"])
-        channel.newChild(None, 'language', self.options["xmllanguage"])
-        channel.newChild(None, 'description', self.options["xmldescription"])
+        channel.newChild(None, 'title', escape(self.options["xmltitle"]))
+        channel.newChild(None, 'link', escape(self.options["xmllink"]))
+        channel.newChild(None, 'language', escape(self.options["xmllanguage"]))
+        channel.newChild(None, 'description', escape(self.options["xmldescription"]))
 
         atom_link = channel.newChild(None, 'atom:link', None)
         atom_link.setProp('href', self.options["xmlurl"])
@@ -159,8 +160,8 @@ class RSS_Feed:
         xml.setProp('xmlns:dc', "http://purl.org/dc/elements/1.1/")
 
         group = xml.newChild(None, 'foaf:Group', None)
-        group.newChild(None, 'foaf:name', self.options["xmltitle"])
-        group.newChild(None, 'foaf:homepage', self.options["xmllink"])
+        group.newChild(None, 'foaf:name', escape(self.options["xmltitle"]))
+        group.newChild(None, 'foaf:homepage', escape(self.options["xmllink"]))
 
         seeAlso = group.newChild(None, 'rdfs:seeAlso', None)
         seeAlso.setProp('rdf:resource', '')
@@ -169,7 +170,7 @@ class RSS_Feed:
             member = group.newChild(None, 'foaf:member', None)
 
             agent = member.newChild(None, 'foaf:Agent', None)
-            agent.newChild(None, 'foaf:name', self.feed_name(rawdog.feeds[url], config))
+            agent.newChild(None, 'foaf:name', escape(self.feed_name(rawdog.feeds[url], config)))
             weblog = agent.newChild(None, 'foaf:weblog', None)
             document = weblog.newChild(None, 'foaf:Document', None)
             document.setProp('rdf:about', url)
@@ -187,12 +188,12 @@ class RSS_Feed:
         xml.setProp('version', "1.1")
 
         head = xml.newChild(None, 'head', None)
-        head.newChild(None, 'title', self.options["xmltitle"])
+        head.newChild(None, 'title', escape(self.options["xmltitle"]))
         now = rfc822_date(gmtime())
-        head.newChild(None, 'dateCreated', now)
-        head.newChild(None, 'dateModified', now)
-        head.newChild(None, 'ownerName', self.options["xmlownername"])
-        head.newChild(None, 'ownerEmail', self.options["xmlowneremail"])
+        head.newChild(None, 'dateCreated', escape(now))
+        head.newChild(None, 'dateModified', escape(now))
+        head.newChild(None, 'ownerName', escape(self.options["xmlownername"]))
+        head.newChild(None, 'ownerEmail', escape(self.options["xmlowneremail"]))
 
         body = xml.newChild(None, 'body', None)
         for url in sorted(rawdog.feeds.keys()):
